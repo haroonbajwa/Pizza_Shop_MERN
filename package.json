@@ -20,6 +20,7 @@
   "homepage": "https://github.com/haroonbajwa/Pizza_Shop_MERN#readme",
   "dependencies": {
     "express": "^4.17.2",
+    "mongoose": "^6.1.2",
     "nodemon": "^2.0.15"
   }
 }
