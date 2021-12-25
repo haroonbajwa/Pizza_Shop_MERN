@@ -31,7 +31,7 @@ const Pizza = ({ pizza }) => {
                     <p className="m-1">Quantity</p>
                     <select className="form-control" value={quantity} onChange={(e) => {setQuantity(e.target.value)}}>
                         {[...Array(10).keys()].map((number, index) => {
-                            return <option value={index+1}>{index+1}</option>
+                            return <option value={index+1} key={index}>{index+1}</option>
                         })}
                     </select>
                 </div>
