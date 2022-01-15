@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { addToCart, deleteFromCart } from '../actions/cartActions';
 
@@ -6,6 +6,8 @@ const Cartscreen = () => {
 
     const cartState = useSelector(state => state.cartReducer);
     const cartItems = cartState.cartItems;
+    const subTotal1 = cartItems.reduce((x, item) => x+item.price, 0);
+    var [subTotal, setSubTotal] = useState(0);
 
     const dispatch = useDispatch();
 
@@ -36,7 +38,10 @@ const Cartscreen = () => {
                     })}
                     
                 </div>
-                <div className="col-md-4"></div>
+                <div className="col-md-4 text-end">
+                    <h2 style={{fontSize:"45px"}}>SubTotal: {subTotal1} /-</h2>
+                    <button className="btn btn-danger">CheckOut</button>
+                </div>
             </div>
             
         </div>
