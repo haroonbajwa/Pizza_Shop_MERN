@@ -30,3 +30,8 @@ h1 {
 .flex-container {
   display: flex !important;
 }
+
+input{
+  margin-top: 10px !important;
+  box-shadow: none !important;
+}
