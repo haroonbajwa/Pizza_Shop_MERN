@@ -4,6 +4,8 @@ import { useDispatch, useSelector } from 'react-redux'
 const Navbar = () => {
 
     const cartState = useSelector(state => state.cartReducer);
+    const userState = useSelector(state => state.loginUserReducer);
+    const { currentUser } = userState;
     
     return (
         <nav className="navbar navbar-expand-lg shadow-lg p-3 mb-5 bg-body rounded">
@@ -13,9 +15,24 @@ const Navbar = () => {
             </button>
             <div className="collapse navbar-collapse" id="navbarNav">
                 <ul className="navbar-nav ms-auto">
-                    <li className="nav-item">
-                        <a className="nav-link" href="/login">Login</a>
-                    </li>
+
+                    {currentUser ? (
+                        <div className="dropdown">
+                        <button className="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                          {currentUser.name}
+                        </button>
+                        <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                          <a className="dropdown-item" href="/">Orders</a>
+                          <a className="dropdown-item" href="/">Logout</a>
+                        </div>
+                      </div>
+                        
+                        ) : (
+                        <li className="nav-item">
+                            <a className="nav-link" href="/login">Login</a>
+                        </li>
+                    )}
+                    
                     <li className="nav-item">
                         <a className="nav-link" href="/cart">Cart {cartState.cartItems.length}</a>
                     </li>

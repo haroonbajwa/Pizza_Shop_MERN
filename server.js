@@ -1,6 +1,7 @@
 const express = require("express");
 const Pizza = require("./models/pizzaModel");
 const pizzasRoute = require('./routes/pizzasRoute');
+const userRoute = require("./routes/userRoute");
 const db = require('./db');
 
 const app = express();
@@ -12,6 +13,7 @@ app.get("/", (req, res) => {
 });
 
 app.use('/api/pizzas/', pizzasRoute);
+app.use('/api/users/', userRoute);
 
 const port = process.env.PORT || 5000;
 
