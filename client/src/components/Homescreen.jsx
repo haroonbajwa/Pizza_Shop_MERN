@@ -1,21 +1,21 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllPizzas } from "../actions/pizzaActions";
-import { getAllMessages, getAllUsers } from "../actions/chatActions";
+import { getAllUsers } from "../actions/chatActions";
 import Error from "./Error";
 import Loading from "./Loading";
-import Pizza from "./Pizza";
+import Categories from "./Landing Page/Categories/Categories";
+import AllProducts from "./Landing Page/AllProducts/AllProducts";
 
 const Homescreen = () => {
   const dispatch = useDispatch();
 
   const pizzasState = useSelector((state) => state.getAllPizzasReducer);
-  const { pizzas, error, loading } = pizzasState;
+  const { error, loading } = pizzasState;
 
   useEffect(() => {
     dispatch(getAllPizzas());
     dispatch(getAllUsers());
-    // dispatch(getAllMessages());
   }, [dispatch]);
 
   return (
@@ -26,17 +26,20 @@ const Homescreen = () => {
         <Error error={error.message} />
       ) : (
         <>
-          {pizzas?.map((pizza) => {
-            return (
-              <div className="col-md-4" key={pizza._id}>
-                <div>
-                  <Pizza pizza={pizza} />
-                </div>
-              </div>
-            );
-          })}
+          {/* main section */}
+          <div className="my-5">
+            <h1 style={{ fontSize: "32px" }}>
+              Order Your <span className="text-danger">Favorites</span>
+            </h1>
+            <h3>Anytime, Anywhere</h3>
+          </div>
+
+          {/* Categories section */}
+          <Categories />
+          <AllProducts />
         </>
       )}
+      {/* <BottomMenu /> */}
     </div>
   );
 };

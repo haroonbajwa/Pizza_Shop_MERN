@@ -7,30 +7,38 @@ const Cartscreen = () => {
   const cartState = useSelector((state) => state.cartReducer);
   const cartItems = cartState.cartItems;
   const subTotal1 = cartItems.reduce((x, item) => x + item.price, 0);
-  var [subTotal, setSubTotal] = useState(0);
 
   const dispatch = useDispatch();
 
   return (
     <div>
       <div className="row justify-content-center">
-        <div className="col-md-6">
-          <h2 style={{ fontSize: "40px" }}>My Cart</h2>
+        <div className="col-md-6 mx-2">
+          <h3 className="text-start mx-2">My Cart</h3>
+          <div
+            className="mb-3 mx-2"
+            style={{ width: "90px", borderBottom: "2px solid #dc3545" }}
+          ></div>
 
           {cartItems.map((item) => {
             return (
-              <div className="flex-container">
+              <div
+                className="flex-container p-2 m-2 shadow"
+                // style={{ border: "1px solid #dc3545" }}
+              >
                 <div className="text-start m-1 w-100">
-                  <h1>
+                  <h2 style={{ fontSize: "20px" }}>
                     {item.name} [{item.variant}]
-                  </h1>
-                  <h1>
+                  </h2>
+                  <p style={{ fontSize: "18px" }}>
                     Price: {item.quantity} * {item.prices[0][item.variant]} ={" "}
                     {item.price}
+                  </p>
+                  <h1 style={{ display: "inline", fontSize: "18px" }}>
+                    Quantity:{" "}
                   </h1>
-                  <h1 style={{ display: "inline" }}>Quantity: </h1>
                   <i
-                    className="fa fa-minus text-danger m-2"
+                    className="fa fa-minus text-danger m-2 btn bg-danger text-white"
                     aria-hidden="true"
                     onClick={() => {
                       dispatch(
@@ -38,9 +46,11 @@ const Cartscreen = () => {
                       );
                     }}
                   ></i>
-                  <b style={{ fontSize: "20px" }}>{item.quantity}</b>
+                  <b className="mx-3" style={{ fontSize: "20px" }}>
+                    {item.quantity}
+                  </b>
                   <i
-                    className="fa fa-plus text-success m-2"
+                    className="fa fa-plus text-success m-2 btn bg-success text-white"
                     aria-hidden="true"
                     onClick={() => {
                       dispatch(
@@ -48,16 +58,15 @@ const Cartscreen = () => {
                       );
                     }}
                   ></i>
-                  <hr />
                 </div>
-                <div m-1 w-100>
+                <div>
                   <img
                     src={item.image}
                     alt="pizza"
                     style={{ height: "80px", width: "80px" }}
                   />
                 </div>
-                <div m-1 w-100>
+                <div>
                   <i
                     className="fa fa-trash text-danger m-2"
                     aria-hidden="true"
@@ -68,8 +77,8 @@ const Cartscreen = () => {
             );
           })}
         </div>
-        <div className="col-md-4 text-end">
-          <h2 style={{ fontSize: "45px" }}>SubTotal: {subTotal1} /-</h2>
+        <div className="col-md-4 text-end mt-4" style={{ marginRight: "30px" }}>
+          <h2 style={{ fontSize: "28px" }}>SubTotal: {subTotal1} /-</h2>
           <button className="btn btn-danger">CheckOut</button>
         </div>
         <Link to="/chat">

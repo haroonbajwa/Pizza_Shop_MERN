@@ -25,21 +25,42 @@ router.post("/login", async (req, res) => {
   const { email, password } = req.body;
 
   try {
-    const user = await User.find({ email, password });
+    const user = await User.findOne({ email, password });
 
-    if (user.length > 0) {
-      const currentUser = {
-        name: user[0].name,
-        email: user[0].email,
-        isAdmin: user[0].isAdmin,
-        _id: user[0]._id,
-      };
-      res.send(currentUser);
+    if (user) {
+      res.send(user);
     } else {
       return res.status(400).json({ message: "User login failed!" });
     }
   } catch (error) {
     return res.status(400).json({ message: "Something went wrong! " });
+  }
+});
+
+router.post("/update", async (req, res) => {
+  try {
+    const { _id, name, image } = req.body;
+
+    // Ensure that the provided _id is valid
+    if (!_id) {
+      return res.status(400).json({ message: "Invalid _id provided" });
+    }
+
+    // Update only the specified fields (excluding _id, isAdmin, email)
+    const updatedUser = await User.findOneAndUpdate(
+      { _id },
+      { name, image },
+      { new: true, omitUndefined: true }
+    );
+
+    if (!updatedUser) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    res.status(200).json(updatedUser);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Internal Server Error" });
   }
 });
 
