@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/haroonbajwa/Pizza_Shop_MERN#readme",
   "dependencies": {
+    "dotenv": "^16.3.1",
     "express": "^4.17.2",
     "mongoose": "^6.1.2",
     "nodemon": "^2.0.15",

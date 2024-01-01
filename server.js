@@ -2,6 +2,7 @@ const express = require("express");
 const http = require("http");
 const socketIO = require("socket.io");
 const cors = require("cors");
+require("dotenv").config();
 
 const Pizza = require("./models/pizzaModel");
 const User = require("./models/userModel");
@@ -13,6 +14,9 @@ const userRoute = require("./routes/userRoute");
 const messageRoute = require("./routes/messageRoute");
 const conversationRoute = require("./routes/conversationRoute");
 const db = require("./db");
+
+const expressPort = process.env.PORT || 5000;
+const socketIOPort = process.env.SOCKET_IO_PORT || 8080;
 
 const app = express();
 app.use(cors());
@@ -87,9 +91,9 @@ app.use("/api/users/", userRoute);
 app.use("/api/messages/", messageRoute);
 app.use("/api/conversations/", conversationRoute);
 
-const port = process.env.PORT || 5000;
-
-app.listen(port, () => console.log(`Server is running on port ${port}`));
-server.listen(8080, () => {
+app.listen(expressPort, () =>
+  console.log(`Server is running on port ${expressPort}`)
+);
+server.listen(socketIOPort, () => {
   console.log("Socket listening on port 8080");
 });
