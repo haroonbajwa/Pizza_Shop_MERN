@@ -16,7 +16,7 @@ const conversationRoute = require("./routes/conversationRoute");
 const db = require("./db");
 
 const expressPort = process.env.PORT || 5000;
-const socketIOPort = process.env.SOCKET_IO_PORT || 8080;
+// const socketIOPort = process.env.SOCKET_IO_PORT || 8080;
 
 const app = express();
 app.use(cors());
@@ -91,9 +91,9 @@ app.use("/api/users/", userRoute);
 app.use("/api/messages/", messageRoute);
 app.use("/api/conversations/", conversationRoute);
 
-app.listen(expressPort, () =>
+server.listen(expressPort, () =>
   console.log(`Server is running on port ${expressPort}`)
 );
-server.listen(socketIOPort, () => {
-  console.log("Socket listening on port 8080");
-});
+// server.listen(socketIOPort, () => {
+//   console.log("Socket listening on port 8080");
+// });
