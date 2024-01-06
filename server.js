@@ -17,7 +17,7 @@ const orderRoute = require("./routes/orderRoute");
 const db = require("./db");
 
 const expressPort = process.env.PORT || 5000;
-const socketIOPort = process.env.SOCKET_IO_PORT || 8080;
+// const socketIOPort = process.env.SOCKET_IO_PORT || 8080;
 
 const app = express();
 app.use(cors());
@@ -26,7 +26,7 @@ app.use(cors());
 const server = http.createServer(app);
 const io = socketIO(server, {
   cors: {
-    origin: "http://localhost:3000", // Update with your React app's URL
+    origin: "*",
     methods: ["GET", "POST"],
   },
 });
@@ -91,12 +91,11 @@ app.use("/api/pizzas/", pizzasRoute);
 app.use("/api/users/", userRoute);
 app.use("/api/messages/", messageRoute);
 app.use("/api/conversations/", conversationRoute);
-
 app.use("/api/orders/", orderRoute);
 
-app.listen(expressPort, () =>
+server.listen(expressPort, () =>
   console.log(`Server is running on port ${expressPort}`)
 );
-server.listen(socketIOPort, () => {
-  console.log("Socket listening on port 8080");
-});
+// server.listen(socketIOPort, () => {
+//   console.log("Socket listening on port 8080");
+// });
