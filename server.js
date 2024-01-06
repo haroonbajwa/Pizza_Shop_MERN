@@ -13,6 +13,7 @@ const pizzasRoute = require("./routes/pizzasRoute");
 const userRoute = require("./routes/userRoute");
 const messageRoute = require("./routes/messageRoute");
 const conversationRoute = require("./routes/conversationRoute");
+const orderRoute = require("./routes/orderRoute");
 const db = require("./db");
 
 const expressPort = process.env.PORT || 5000;
@@ -90,6 +91,8 @@ app.use("/api/pizzas/", pizzasRoute);
 app.use("/api/users/", userRoute);
 app.use("/api/messages/", messageRoute);
 app.use("/api/conversations/", conversationRoute);
+
+app.use("/api/orders/", orderRoute);
 
 app.listen(expressPort, () =>
   console.log(`Server is running on port ${expressPort}`)
