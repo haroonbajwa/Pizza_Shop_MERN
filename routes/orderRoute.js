@@ -29,6 +29,20 @@ router.post("/place-order", async (req, res) => {
   }
 });
 
+// Route to get a user's orders
+router.get("/user-orders/:userId", async (req, res) => {
+  try {
+    const { userId } = req.params;
+    const userOrders = await Order.find({ user: userId }).populate("user");
+
+    // Respond with the user's orders
+    res.status(200).json(userOrders);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
 // router.get("/all", async (req, res) => {
 //   try {
 //     const conversations = await Conversation.find();

@@ -1,8 +1,10 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 import { useSelector, useDispatch } from "react-redux";
 import { addToCart, deleteFromCart } from "../actions/cartActions";
 import { placeOrder } from "../actions/orderActions";
+import { MdOutlineRemoveShoppingCart } from "react-icons/md";
 import Error from "./Error";
 import Loading from "./Loading";
 
@@ -16,6 +18,7 @@ const Cartscreen = () => {
   console.log(cartItems, "items");
 
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   // const cartData = cartItems
 
@@ -28,9 +31,24 @@ const Cartscreen = () => {
 
     // Dispatch the placeOrder action
     dispatch(placeOrder(orderData)).then((res) => {
-      console.log(res, "response place order");
+      toast.success(res.message);
     });
   };
+
+  // if cart is empty
+  if (cartItems.length <= 0) {
+    return (
+      <div className="d-flex h-100 justify-content-center align-items-center">
+        <div className="text-center mt-5">
+          <MdOutlineRemoveShoppingCart size={56} />
+          <h3>Cart Empty</h3>
+          <button className="btn btn-danger mt-3" onClick={() => navigate("/")}>
+            Continue Shopping
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div>
@@ -113,9 +131,6 @@ const Cartscreen = () => {
               Place Order
             </button>
           </div>
-          <Link to="/chat">
-            <button className="btn btn-info">Let's Chat</button>
-          </Link>
         </div>
       )}
     </div>

@@ -3,6 +3,9 @@ import {
   PLACE_ORDER_REQUEST,
   PLACE_ORDER_SUCCESS,
   PLACE_ORDER_FAILURE,
+  GET_USER_ORDERS_REQUEST,
+  GET_USER_ORDERS_SUCCESS,
+  GET_USER_ORDERS_FAILURE,
 } from "../actions/actionsTypes";
 
 const initialState = {
@@ -12,7 +15,6 @@ const initialState = {
 };
 
 const orderReducer = (state = initialState, action) => {
-  console.log(action.payload, "response order reducer");
   switch (action.type) {
     case PLACE_ORDER_REQUEST:
       return {
@@ -34,6 +36,29 @@ const orderReducer = (state = initialState, action) => {
         ...state,
         loading: false,
         order: null,
+        error: action.payload,
+      };
+
+    case GET_USER_ORDERS_REQUEST:
+      return {
+        ...state,
+        loading: true,
+        error: null,
+      };
+
+    case GET_USER_ORDERS_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        userOrders: action.payload,
+        error: null,
+      };
+
+    case GET_USER_ORDERS_FAILURE:
+      return {
+        ...state,
+        loading: false,
+        userOrders: null,
         error: action.payload,
       };
 

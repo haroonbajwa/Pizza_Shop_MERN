@@ -1,16 +1,23 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { updateUser } from "../../actions/userActions";
 import placeholderImage from "../../assets/userAvatar.jpg";
 import { FaCamera } from "react-icons/fa";
 
 const MyAccount = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   const userState = useSelector((state) => state.loginUserReducer);
   const { currentUser } = userState;
 
+  const userData = {
+    ...currentUser,
+    Image: `data:image/png;base64,${currentUser.image}`,
+  };
   const [isEditing, setEditing] = useState(false);
-  const [updatedUser, setUpdatedUser] = useState(currentUser);
+  const [updatedUser, setUpdatedUser] = useState(userData);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -42,6 +49,19 @@ const MyAccount = () => {
 
   return (
     <div className="container mt-4">
+      <div className="row">
+        <menu>
+          <button
+            className="btn btn-danger mx-2"
+            onClick={() => navigate("/manage-products")}
+          >
+            Products
+          </button>
+          <button className="btn btn-danger mx-2" onClick={() => {}}>
+            Categories
+          </button>
+        </menu>
+      </div>
       <div className="row">
         <div className="col-md-4 col-sm-12 mb-3">
           <label htmlFor="upload-image">
