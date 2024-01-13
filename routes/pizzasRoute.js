@@ -14,6 +14,25 @@ router.get("/pizzas", async (req, res) => {
   }
 });
 
+router.post("/add", async (req, res) => {
+  try {
+    const data = req.body;
+
+    // Create a new product instance
+    const newPizza = new Pizza(data);
+
+    // Save the new product to the database
+    const savedProduct = await newPizza.save();
+
+    // Respond with the newly created product
+    res
+      .status(201)
+      .json({ message: "New Product added successfully.", data: savedProduct });
+  } catch (error) {
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
 router.post("/edit/:id", async (req, res) => {
   try {
     const pizzaId = req.params.id;
@@ -28,6 +47,23 @@ router.post("/edit/:id", async (req, res) => {
     res.send(updatedPizza);
   } catch (error) {
     return res.status(400).json({ message: error });
+  }
+});
+
+router.delete("/delete/:id", async (req, res) => {
+  try {
+    const pizzaId = req.params.id;
+    // Find the product by ID and remove it
+    const deletedPizza = await Pizza.findByIdAndRemove(pizzaId);
+
+    if (!deletedPizza) {
+      return res.status(404).json({ message: "Product not found" });
+    }
+
+    return res.status(200).json({ message: "Product deleted successfully" });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: "Internal Server Error" });
   }
 });
 

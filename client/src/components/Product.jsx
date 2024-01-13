@@ -11,7 +11,7 @@ const Product = ({ pizza }) => {
   const dispatch = useDispatch();
 
   const [quantity, setQuantity] = useState(1);
-  const [variant, setVariant] = useState("small");
+  const [variant, setVariant] = useState(Object.keys(pizza.prices[0])[0]);
 
   const [show, setShow] = useState(false);
 

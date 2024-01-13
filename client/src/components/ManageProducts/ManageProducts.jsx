@@ -6,6 +6,7 @@ import { Modal, Button, Form } from "react-bootstrap";
 import Error from "../Error";
 import Loading from "../Loading";
 import { getAllPizzas } from "../../actions/pizzaActions";
+import { toast } from "react-toastify";
 
 const ManageProducts = () => {
   const dispatch = useDispatch();
@@ -87,26 +88,44 @@ const ManageProducts = () => {
     });
   };
 
-  const handleEditClick = (item) => {
+  const handleEdit = (item) => {
     setSelectedItem(item);
     setShowEditModal(true);
-    // Add logic to populate the form fields with the selected product data
+  };
+
+  const handleDelete = async (productId) => {
+    await axios.delete(`/api/pizzas/delete/${productId}`).then((res) => {
+      dispatch(getAllPizzas());
+      toast.info(res.data.message);
+    });
   };
 
   const handleEditModalClose = () => {
-    setShowEditModal(false);
     setSelectedItem(null);
+    setShowEditModal(false);
   };
 
   const handleEditFormSubmit = async (event) => {
     event.preventDefault();
 
     if (selectedItem) {
+      // edit selected product
       setShowEditModal(false);
       setSelectedItem(null);
       await axios
         .post(`/api/pizzas/edit/${selectedItem._id}`, editedProduct)
-        .then(() => dispatch(getAllPizzas()));
+        .then(() => {
+          dispatch(getAllPizzas());
+          toast.success("Product updated successfully.");
+        });
+    } else {
+      // add new product
+      setShowEditModal(false);
+      setSelectedItem(null);
+      await axios.post("/api/pizzas/add", editedProduct).then((res) => {
+        dispatch(getAllPizzas());
+        toast.success(res.data.message);
+      });
     }
   };
 
@@ -118,6 +137,14 @@ const ManageProducts = () => {
         <Error error={error.message} />
       ) : (
         <>
+          <div className="d-flex justify-content-end m-3">
+            <button
+              className="btn btn-success"
+              onClick={() => setShowEditModal(true)}
+            >
+              Add Product
+            </button>
+          </div>
           <table
             className="table table-striped"
             style={{ overflowX: "scroll" }}
@@ -145,11 +172,14 @@ const ManageProducts = () => {
                   <td>
                     <button
                       className="btn btn-warning m-1"
-                      onClick={() => handleEditClick(item)}
+                      onClick={() => handleEdit(item)}
                     >
                       <FaEdit />
                     </button>
-                    <button className="btn btn-danger m-1">
+                    <button
+                      className="btn btn-danger m-1"
+                      onClick={() => handleDelete(item._id)}
+                    >
                       <FaTrash />
                     </button>
                   </td>
@@ -177,7 +207,7 @@ const ManageProducts = () => {
 
                 <Form.Group controlId="productVariants">
                   <Form.Label>Variants</Form.Label>
-                  <div className="d-flex">
+                  <div className="d-flex align-items-center">
                     <Form.Control
                       type="text"
                       placeholder="Enter new variant"
@@ -193,16 +223,6 @@ const ManageProducts = () => {
                     </Button>
                   </div>
                 </Form.Group>
-                {/* <Form.Group controlId="productVariants">
-              <Form.Label>Variants</Form.Label>
-              <Form.Control
-                type="text"
-                name="variants"
-                placeholder="Enter product variants (comma-separated)"
-                value={editedProduct.variants.join(", ")}
-                onChange={handleInputChange}
-              />
-            </Form.Group> */}
 
                 <Form.Group controlId="productPrices">
                   <Form.Label>Prices</Form.Label>

@@ -49,7 +49,8 @@ const MyAccount = () => {
 
   return (
     <div className="container mt-4">
-      <div className="row">
+      <div className="row card mb-3">
+        <h3 className="my-2" style={{fontSize: "20px"}}>Manage Records</h3>
         <menu>
           <button
             className="btn btn-danger mx-2"
