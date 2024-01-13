@@ -15,6 +15,7 @@ import BottomMenu from "./components/BottomMenu";
 import MyAccount from "./components/MyAccount/MyAccount";
 import Orders from "./components/Orders/Orders";
 import ManageProducts from "./components/ManageProducts/ManageProducts";
+import ManageCategories from "./components/ManageCategories/ManageCategories";
 
 const PrivateRoute = ({ element }) => {
   // Check if the current user is available in localStorage
@@ -72,6 +73,11 @@ function App() {
               exact
               path="/manage-products"
               element={<PrivateRoute element={<ManageProducts />} />}
+            />
+            <Route
+              exact
+              path="/manage-categories"
+              element={<PrivateRoute element={<ManageCategories />} />}
             />
           </Routes>
         </div>

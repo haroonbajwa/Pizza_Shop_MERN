@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getAllPizzas } from "../actions/pizzaActions";
+import { getAllPizzas, getAllCategories } from "../actions/pizzaActions";
 import { getAllUsers } from "../actions/chatActions";
 import Error from "./Error";
 import Loading from "./Loading";
@@ -15,6 +15,7 @@ const Homescreen = () => {
 
   useEffect(() => {
     dispatch(getAllPizzas());
+    dispatch(getAllCategories());
     dispatch(getAllUsers());
   }, [dispatch]);
 

@@ -44,8 +44,12 @@ const Product = ({ pizza }) => {
               setVariant(e.target.value);
             }}
           >
-            {pizza.variants.map((option) => {
-              return <option value={option}>{option}</option>;
+            {pizza.variants.map((option, index) => {
+              return (
+                <option value={option} key={index}>
+                  {option}
+                </option>
+              );
             })}
           </select>
         </div>

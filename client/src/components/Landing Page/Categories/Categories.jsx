@@ -1,6 +1,14 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 
 const Categories = () => {
+  const pizzasState = useSelector((state) => state.getAllPizzasReducer);
+  const { categories } = pizzasState;
+  const [allCategories, setAllCategories] = useState([]);
+
+  useEffect(() => {
+    if (categories) setAllCategories(categories);
+  }, [categories]);
   return (
     <div className="mx-1 my-4">
       <h3 className="text-start">Categories</h3>
@@ -9,7 +17,10 @@ const Categories = () => {
         style={{ width: "90px", borderBottom: "2px solid #dc3545" }}
       ></div>
 
-      <div className="row flex-nowrap mx-1 py-1" style={{ overflowX: "scroll" }}>
+      <div
+        className="row flex-nowrap mx-1 py-1"
+        style={{ overflowX: "scroll" }}
+      >
         {[...Array(6).keys()].map((number, index) => {
           return (
             <div
@@ -19,6 +30,7 @@ const Categories = () => {
                 margin: "2px",
                 borderRadius: "5px",
               }}
+              key={index}
             >
               <div className="category-container d-flex align-items-center">
                 <img

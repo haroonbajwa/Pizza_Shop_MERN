@@ -1,11 +1,11 @@
-import React from 'react'
+import React from "react";
 
 const Error = ({ error }) => {
   return (
-    <div class="alert alert-danger" role="alert">
-        {error}
+    <div className="alert alert-danger" role="alert">
+      {error}
     </div>
-  )
-}
+  );
+};
 
-export default Error
+export default Error;

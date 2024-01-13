@@ -57,7 +57,10 @@ const MyAccount = () => {
           >
             Products
           </button>
-          <button className="btn btn-danger mx-2" onClick={() => {}}>
+          <button
+            className="btn btn-danger mx-2"
+            onClick={() => navigate("/manage-categories")}
+          >
             Categories
           </button>
         </menu>
