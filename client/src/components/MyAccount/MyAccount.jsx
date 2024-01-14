@@ -47,25 +47,35 @@ const MyAccount = () => {
     }));
   };
 
+  const handleLogout = (e) => {
+    navigate("/login");
+    localStorage.clear();
+    dispatch({ type: "USER_LOGOUT" });
+  };
+
   return (
     <div className="container mt-4">
-      <div className="row card mb-3">
-        <h3 className="my-2" style={{fontSize: "20px"}}>Manage Records</h3>
-        <menu>
-          <button
-            className="btn btn-danger mx-2"
-            onClick={() => navigate("/manage-products")}
-          >
-            Products
-          </button>
-          <button
-            className="btn btn-danger mx-2"
-            onClick={() => navigate("/manage-categories")}
-          >
-            Categories
-          </button>
-        </menu>
-      </div>
+      {currentUser.isAdmin && (
+        <div className="row card mb-3">
+          <h3 className="my-2" style={{ fontSize: "20px" }}>
+            Manage Records
+          </h3>
+          <menu>
+            <button
+              className="btn btn-danger mx-2"
+              onClick={() => navigate("/manage-products")}
+            >
+              Products
+            </button>
+            <button
+              className="btn btn-danger mx-2"
+              onClick={() => navigate("/manage-categories")}
+            >
+              Categories
+            </button>
+          </menu>
+        </div>
+      )}
       <div className="row">
         <div className="col-md-4 col-sm-12 mb-3">
           <label htmlFor="upload-image">
@@ -95,7 +105,9 @@ const MyAccount = () => {
 
           {isEditing && (
             <div className="form-group">
-              <label htmlFor="name">Name:</label>
+              <label htmlFor="name" className="text-start">
+                Name
+              </label>
               <input
                 type="text"
                 className="form-control"
@@ -118,14 +130,19 @@ const MyAccount = () => {
 
           {isEditing && (
             <>
-              <button className="btn btn-success ml-2" onClick={handleUpdate}>
+              <button className="btn btn-success m-2" onClick={handleUpdate}>
                 Update
               </button>
-              <button className="btn btn-secondary ml-2" onClick={handleCancel}>
+              <button className="btn btn-secondary m-2" onClick={handleCancel}>
                 Cancel
               </button>
             </>
           )}
+          <div>
+            <button className="btn btn-danger mt-2" onClick={handleLogout}>
+              Logout
+            </button>
+          </div>
         </div>
       </div>
     </div>

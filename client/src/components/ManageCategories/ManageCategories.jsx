@@ -1,9 +1,13 @@
 import React, { useState, useEffect } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import axios from "axios";
 import { FaEdit, FaTrash } from "react-icons/fa";
 import { Modal, Button, Form } from "react-bootstrap";
+import { getAllCategories } from "../../actions/pizzaActions";
+import { toast } from "react-toastify";
 
 const ManageCategories = () => {
+  const dispatch = useDispatch();
   const pizzasState = useSelector((state) => state.getAllPizzasReducer);
   const { categories } = pizzasState;
   const [showEditModal, setShowEditModal] = useState(false);
@@ -38,25 +42,63 @@ const ManageCategories = () => {
     }));
   };
 
-  const handleEditClick = (item) => {
+  const handleEdit = (item) => {
     setSelectedItem(item);
     setShowEditModal(true);
-    // Add logic to populate the form fields with the selected product data
   };
 
   const handleEditModalClose = () => {
+    setSelectedItem(null);
+    setEditedCategory({
+      name: "",
+      image: "",
+      description: "",
+    });
     setShowEditModal(false);
   };
 
-  const handleEditFormSubmit = (event) => {
+  const handleEditFormSubmit = async (event) => {
     event.preventDefault();
-    // Add logic to handle form submission and update the product data
-    // Close the modal after successful submission
     setShowEditModal(false);
+    setSelectedItem(null);
+    if (selectedItem) {
+      // edit selected category
+      await axios
+        .post(`/api/pizzas/edit-category/${selectedItem._id}`, editedCategory)
+        .then(() => {
+          dispatch(getAllCategories());
+          toast.success("Category updated successfully.");
+        });
+    } else {
+      // add new category
+      await axios
+        .post("/api/pizzas/add-category", editedCategory)
+        .then((res) => {
+          dispatch(getAllCategories());
+          toast.success(res.data.message);
+        });
+    }
+  };
+
+  const handleDelete = async (categoryId) => {
+    await axios
+      .delete(`/api/pizzas/delete-category/${categoryId}`)
+      .then((res) => {
+        dispatch(getAllCategories());
+        toast.info(res.data.message);
+      });
   };
 
   return (
     <>
+      <div className="d-flex justify-content-end m-3">
+        <button
+          className="btn btn-success"
+          onClick={() => setShowEditModal(true)}
+        >
+          Add Category
+        </button>
+      </div>
       <table className="table table-striped" style={{ overflowX: "scroll" }}>
         <thead>
           <tr>
@@ -81,11 +123,14 @@ const ManageCategories = () => {
               <td>
                 <button
                   className="btn btn-warning m-1"
-                  onClick={() => handleEditClick(item)}
+                  onClick={() => handleEdit(item)}
                 >
                   <FaEdit />
                 </button>
-                <button className="btn btn-danger m-1">
+                <button
+                  className="btn btn-danger m-1"
+                  onClick={() => handleDelete(item._id)}
+                >
                   <FaTrash />
                 </button>
               </td>

@@ -35,6 +35,11 @@ export const loginUserReducer = (state = {}, action) => {
         loading: false,
         error: action.payload,
       };
+    case "USER_LOGOUT":
+      return {
+        success: false,
+        currentUser: null,
+      };
 
     // user update
     case "USER_UPDATE_SUCCESS":

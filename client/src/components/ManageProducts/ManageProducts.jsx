@@ -102,6 +102,14 @@ const ManageProducts = () => {
 
   const handleEditModalClose = () => {
     setSelectedItem(null);
+    setEditedProduct({
+      name: "",
+      variants: [],
+      prices: [{}],
+      category: "",
+      image: "",
+      description: "",
+    });
     setShowEditModal(false);
   };
 
@@ -190,7 +198,9 @@ const ManageProducts = () => {
 
           <Modal show={showEditModal} onHide={handleEditModalClose}>
             <Modal.Header closeButton>
-              <Modal.Title>Edit Product</Modal.Title>
+              <Modal.Title>
+                {selectedItem ? "Edit Product" : "Add Product"}
+              </Modal.Title>
             </Modal.Header>
             <Modal.Body>
               <Form onSubmit={handleEditFormSubmit}>
@@ -305,7 +315,7 @@ const ManageProducts = () => {
                   />
                 </Form.Group>
 
-                <Button variant="primary" type="submit">
+                <Button variant="primary" type="submit" className="mt-2">
                   Save Changes
                 </Button>
               </Form>
