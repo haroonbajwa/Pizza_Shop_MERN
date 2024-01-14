@@ -4,9 +4,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { IoChatboxEllipsesOutline } from "react-icons/io5";
 import { Card, Badge } from "react-bootstrap";
 import { getUserOrders } from "../../actions/orderActions";
+import { getAllConversations } from "../../actions/chatActions";
 
 import Error from "../Error";
 import Loading from "../Loading";
+import ConversationsList from "../ConversationsList";
 
 const Orders = () => {
   const currentUser = JSON.parse(localStorage.getItem("currentUser")) || null;
@@ -14,13 +16,14 @@ const Orders = () => {
     (state) => state.orderReducer
   );
 
-  console.log(currentUser._id, userOrders, "user orders");
+  const { allConversations } = useSelector((state) => state.chatReducer);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   useEffect(() => {
     dispatch(getUserOrders(currentUser?._id));
+    dispatch(getAllConversations());
   }, [dispatch]);
 
   const getStatusVariant = (status) => {
@@ -48,22 +51,38 @@ const Orders = () => {
         <Error error={error.message} />
       ) : (
         <>
-          <div className="d-flex justify-content-end m-2">
-            <Link
-              to="/chat"
-              className="d-flex justify-content-end text-decoration-none"
-            >
-              <button className="btn btn-info">
-                <IoChatboxEllipsesOutline size={22} />
-                <span>Let's Chat</span>
-              </button>
-            </Link>
+          {currentUser.isAdmin ? (
+            <ConversationsList conversations={allConversations} />
+          ) : (
+            <div className="d-flex justify-content-end m-2">
+              <Link
+                to="/chat"
+                className="d-flex justify-content-end text-decoration-none"
+              >
+                <button className="btn btn-info">
+                  <IoChatboxEllipsesOutline size={22} />
+                  <span>Let's Chat</span>
+                </button>
+              </Link>
+            </div>
+          )}
+          <div style={{ paddingLeft: "16px" }}>
+            <h3 style={{ fontSize: "20px" }} className="my-3 mx-1 text-start">
+              Orders
+            </h3>
+            <div
+              className="mb-3 mx-1"
+              style={{ width: "90px", borderBottom: "2px solid #dc3545" }}
+            ></div>
           </div>
           {userOrders?.map((order) => (
             <Card key={order._id} className="mb-4">
               <Card.Body>
-                <div className="d-flex align-items-center">
-                  <Card.Title>Order {order._id}</Card.Title>
+                <h3 style={{ fontSize: "20px" }}>{order.user.name}</h3>
+                <div className="d-flex align-items-center justify-content-between">
+                  <Card.Title style={{ fontSize: "15px" }}>
+                    Order {order._id}
+                  </Card.Title>
                   <Badge
                     bg={getStatusVariant(order.status)}
                     className="mb-2 p-2 ml-1"

@@ -11,7 +11,6 @@ const Chat = ({ senderId, messages }) => {
   const [message, setMessage] = useState("");
   const dispatch = useDispatch();
   const conversation = useSelector((state) => state.chatReducer.conversation);
-  console.log(conversation, "conv");
 
   const handleMessageSubmit = (e) => {
     e.preventDefault();
@@ -32,7 +31,6 @@ const Chat = ({ senderId, messages }) => {
   useEffect(() => {
     // Handle incoming messages from the admin
     socket.on("receiveMessage", (newMessage) => {
-      console.log(newMessage, "received msg comp");
       dispatch({ type: "RECEIVE_MESSAGE", payload: newMessage });
     });
 
@@ -80,25 +78,27 @@ const Chat = ({ senderId, messages }) => {
         })}
       </div>
 
-      <div className="card-footer">
-        <div className="input-group align-items-center">
-          <input
-            type="text"
-            className="form-control"
-            placeholder="Type your message..."
-            value={message}
-            onChange={(e) => setMessage(e.target.value)}
-          ></input>
-          <div className=" align-items-center">
-            <span
-              onClick={handleMessageSubmit}
-              className="input-group-text btn bg-primary text-white mt-2"
-            >
-              <i className="fas fa-location-arrow"></i>
-            </span>
+      {conversation && (
+        <div className="card-footer">
+          <div className="input-group align-items-center">
+            <input
+              type="text"
+              className="form-control"
+              placeholder="Type your message..."
+              value={message}
+              onChange={(e) => setMessage(e.target.value)}
+            ></input>
+            <div className=" align-items-center">
+              <span
+                onClick={handleMessageSubmit}
+                className="input-group-text btn bg-primary text-white mt-2"
+              >
+                <i className="fas fa-location-arrow"></i>
+              </span>
+            </div>
           </div>
         </div>
-      </div>
+      )}
     </div>
   );
 };

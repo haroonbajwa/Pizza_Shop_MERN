@@ -42,7 +42,9 @@ router.post("/create/:userId", async (req, res) => {
 
 router.get("/all", async (req, res) => {
   try {
-    const conversations = await Conversation.find();
+    const conversations = await Conversation.find()
+      .select("_id members")
+      .populate("members");
     res.send(conversations);
   } catch (error) {
     return res.status(400).json({ message: error });

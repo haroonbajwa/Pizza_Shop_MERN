@@ -17,7 +17,6 @@ router.post("/register", async (req, res) => {
 
 router.get("/all", async (req, res) => {
   const allUsers = await User.find();
-  console.log(allUsers);
   res.status(200).json(allUsers);
 });
 

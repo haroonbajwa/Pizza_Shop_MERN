@@ -37,8 +37,6 @@ io.on("connection", (socket) => {
   // Handle chat events
   socket.on("sendMessage", async ({ conversationId, senderId, message }) => {
     try {
-      console.log(conversationId, senderId, "message user");
-
       // Create a new instance of the Message model
       const newMessage = new Message({
         sender: senderId,

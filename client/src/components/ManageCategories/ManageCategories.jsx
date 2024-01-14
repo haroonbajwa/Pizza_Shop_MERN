@@ -22,8 +22,6 @@ const ManageCategories = () => {
     description: "",
   });
 
-  console.log(editedCategory, "edited data");
-
   useEffect(() => {
     // Set the form fields based on the selectedItem
     if (selectedItem)

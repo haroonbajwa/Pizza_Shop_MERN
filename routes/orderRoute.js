@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 
 const Order = require("../models/orderModel");
+const User = require("../models/userModel");
 
 // Route to handle placing an order
 router.post("/place-order", async (req, res) => {
@@ -33,7 +34,14 @@ router.post("/place-order", async (req, res) => {
 router.get("/user-orders/:userId", async (req, res) => {
   try {
     const { userId } = req.params;
-    const userOrders = await Order.find({ user: userId }).populate("user");
+
+    const adminUser = await User.findOne({ isAdmin: true });
+    let userOrders = [];
+    if (adminUser._id.toString() === userId) {
+      userOrders = await Order.find().populate("user");
+    } else {
+      userOrders = await Order.find({ user: userId }).populate("user");
+    }
 
     // Respond with the user's orders
     res.status(200).json(userOrders);

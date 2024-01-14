@@ -6,15 +6,17 @@ import { getConversation } from "../actions/chatActions";
 const ChatScreen = () => {
   const dispatch = useDispatch();
   const conversation = useSelector((state) => state.chatReducer.conversation);
-  const currentUser = JSON.parse(localStorage.getItem("currentUser"));
+  const selectedUser = useSelector(
+    (state) => state.chatReducer.selectedConvUser
+  );
 
   useEffect(() => {
-    dispatch(getConversation(currentUser?._id));
+    dispatch(getConversation(selectedUser._id));
   }, []);
 
   return (
     <div>
-      <Chat senderId={currentUser._id} messages={conversation?.messages} />
+      <Chat senderId={selectedUser._id} messages={conversation?.messages} />
     </div>
   );
 };

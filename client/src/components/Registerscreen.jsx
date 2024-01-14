@@ -26,7 +26,6 @@ const Registerscreen = () => {
         email,
         password
       }
-      console.log(user);
       dispatch(registerUser(user));
     }
   }

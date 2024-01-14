@@ -4,7 +4,8 @@ const initialState = {
   allMessages: [],
   allUsers: [],
   conversation: [],
-  // Other relevant state properties can be added here
+  allConversations: [],
+  selectedConvUser: JSON.parse(localStorage.getItem("currentUser")),
 };
 
 const chatReducer = (state = initialState, action) => {
@@ -14,9 +15,18 @@ const chatReducer = (state = initialState, action) => {
         ...state,
         conversation: action.payload,
       };
+    case "GET_ALL_CONVERSATIONS_SUCCESS":
+      return {
+        ...state,
+        allConversations: action.payload,
+      };
+    case "SELECT_CONVERSATION_USER":
+      return {
+        ...state,
+        selectedConvUser: action.payload,
+      };
 
     case "RECEIVE_MESSAGE":
-      console.log(action, "received msg");
       return {
         ...state,
         conversation: {

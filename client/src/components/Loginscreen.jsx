@@ -31,7 +31,6 @@ const Loginscreen = () => {
         email,
         password,
       }
-      console.log(user);
       dispatch(loginUser(user));
     }
   }

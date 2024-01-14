@@ -15,8 +15,6 @@ const Cartscreen = () => {
   const cartItems = cartState.cartItems;
   const subTotal1 = cartItems.reduce((x, item) => x + item.price, 0);
 
-  console.log(cartItems, "items");
-
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
