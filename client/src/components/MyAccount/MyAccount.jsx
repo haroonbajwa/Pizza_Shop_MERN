@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { updateUser } from "../../actions/userActions";
 import placeholderImage from "../../assets/userAvatar.jpg";
 import { FaCamera } from "react-icons/fa";
+import { convertToBase64 } from "../helperFunctions";
 
 const MyAccount = () => {
   const dispatch = useDispatch();
@@ -37,13 +38,13 @@ const MyAccount = () => {
     setEditing(false);
   };
 
-  const handleImageChange = (e) => {
+  const handleImageChange = async (e) => {
     const file = e.target.files[0];
-    // Handle the file upload logic here
-    // For now, just update the image URL
+
+    const base64 = await convertToBase64(file);
     setUpdatedUser((prevUser) => ({
       ...prevUser,
-      image: URL.createObjectURL(file),
+      image: base64,
     }));
   };
 

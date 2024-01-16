@@ -5,6 +5,7 @@ import { FaEdit, FaTrash } from "react-icons/fa";
 import { Modal, Button, Form } from "react-bootstrap";
 import { getAllCategories } from "../../actions/pizzaActions";
 import { toast } from "react-toastify";
+import { convertToBase64 } from "../helperFunctions";
 
 const ManageCategories = () => {
   const dispatch = useDispatch();
@@ -37,6 +38,16 @@ const ManageCategories = () => {
     setEditedCategory((prevCategory) => ({
       ...prevCategory,
       [name]: value,
+    }));
+  };
+
+  const handleImageChange = async (e) => {
+    const file = e.target.files[0];
+
+    const base64 = await convertToBase64(file);
+    setEditedCategory((prevUser) => ({
+      ...prevUser,
+      image: base64,
     }));
   };
 
@@ -167,17 +178,16 @@ const ManageCategories = () => {
             </Form.Group>
 
             <Form.Group controlId="productImage">
-              <Form.Label>Image URL</Form.Label>
+              <Form.Label>Image</Form.Label>
               <Form.Control
-                type="text"
                 name="image"
-                placeholder="Enter product image URL"
-                value={editedCategory.image}
-                onChange={handleInputChange}
+                type="file"
+                accept=".jpg, .jpeg, .png"
+                onChange={handleImageChange}
               />
             </Form.Group>
 
-            <Button variant="primary" type="submit">
+            <Button variant="primary" type="submit" className="mt-3">
               Save Changes
             </Button>
           </Form>

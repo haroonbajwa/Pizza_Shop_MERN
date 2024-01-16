@@ -7,6 +7,7 @@ import Error from "../Error";
 import Loading from "../Loading";
 import { getAllPizzas } from "../../actions/pizzaActions";
 import { toast } from "react-toastify";
+import { convertToBase64 } from "../helperFunctions";
 
 const ManageProducts = () => {
   const dispatch = useDispatch();
@@ -111,6 +112,16 @@ const ManageProducts = () => {
       description: "",
     });
     setShowEditModal(false);
+  };
+
+  const handleImageChange = async (e) => {
+    const file = e.target.files[0];
+
+    const base64 = await convertToBase64(file);
+    setEditedProduct((prevProduct) => ({
+      ...prevProduct,
+      image: base64,
+    }));
   };
 
   const handleEditFormSubmit = async (event) => {
@@ -293,7 +304,7 @@ const ManageProducts = () => {
                   />
                 </Form.Group>
 
-                <Form.Group controlId="productImage">
+                {/* <Form.Group controlId="productImage">
                   <Form.Label>Image URL</Form.Label>
                   <Form.Control
                     type="text"
@@ -301,6 +312,16 @@ const ManageProducts = () => {
                     placeholder="Enter product image URL"
                     value={editedProduct.image}
                     onChange={handleInputChange}
+                  />
+                </Form.Group> */}
+
+                <Form.Group controlId="productImage">
+                  <Form.Label>Image</Form.Label>
+                  <Form.Control
+                    name="image"
+                    type="file"
+                    accept=".jpg, .jpeg, .png"
+                    onChange={handleImageChange}
                   />
                 </Form.Group>
 
