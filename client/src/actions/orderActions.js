@@ -14,7 +14,10 @@ export const placeOrder = (orderData) => async (dispatch) => {
     dispatch({ type: PLACE_ORDER_REQUEST });
 
     // Make an API request to place the order
-    const response = await axios.post("/api/orders/place-order", orderData);
+    const response = await axios.post(
+      `${process.env.REACT_APP_BASE_URL}/api/orders/place-order`,
+      orderData
+    );
     dispatch({
       type: PLACE_ORDER_SUCCESS,
       payload: response.data,
@@ -34,7 +37,9 @@ export const getUserOrders = (userId) => async (dispatch) => {
     dispatch({ type: GET_USER_ORDERS_REQUEST });
 
     // Make an API request to place the order
-    const response = await axios.get(`/api/orders/user-orders/${userId}`);
+    const response = await axios.get(
+      `${process.env.REACT_APP_BASE_URL}/api/orders/user-orders/${userId}`
+    );
     dispatch({
       type: GET_USER_ORDERS_SUCCESS,
       payload: response.data,

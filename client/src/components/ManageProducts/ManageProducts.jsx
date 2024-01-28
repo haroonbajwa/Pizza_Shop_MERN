@@ -95,10 +95,12 @@ const ManageProducts = () => {
   };
 
   const handleDelete = async (productId) => {
-    await axios.delete(`/api/pizzas/delete/${productId}`).then((res) => {
-      dispatch(getAllPizzas());
-      toast.info(res.data.message);
-    });
+    await axios
+      .delete(`${process.env.REACT_APP_BASE_URL}/api/pizzas/delete/${productId}`)
+      .then((res) => {
+        dispatch(getAllPizzas());
+        toast.info(res.data.message);
+      });
   };
 
   const handleEditModalClose = () => {
@@ -132,7 +134,10 @@ const ManageProducts = () => {
       setShowEditModal(false);
       setSelectedItem(null);
       await axios
-        .post(`/api/pizzas/edit/${selectedItem._id}`, editedProduct)
+        .post(
+          `${process.env.REACT_APP_BASE_URL}/api/pizzas/edit/${selectedItem._id}`,
+          editedProduct
+        )
         .then(() => {
           dispatch(getAllPizzas());
           toast.success("Product updated successfully.");
@@ -141,10 +146,12 @@ const ManageProducts = () => {
       // add new product
       setShowEditModal(false);
       setSelectedItem(null);
-      await axios.post("/api/pizzas/add", editedProduct).then((res) => {
-        dispatch(getAllPizzas());
-        toast.success(res.data.message);
-      });
+      await axios
+        .post(`${process.env.REACT_APP_BASE_URL}/api/pizzas/add`, editedProduct)
+        .then((res) => {
+          dispatch(getAllPizzas());
+          toast.success(res.data.message);
+        });
     }
   };
 

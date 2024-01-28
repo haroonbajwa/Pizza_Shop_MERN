@@ -19,6 +19,7 @@ const Homescreen = () => {
     dispatch(getAllUsers());
   }, [dispatch]);
 
+  console.log(process.env.REACT_APP_BASE_URL, "url");
   return (
     <div className="row">
       {loading ? (
