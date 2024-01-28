@@ -12,7 +12,7 @@ const ChatScreen = () => {
 
   useEffect(() => {
     dispatch(getConversation(selectedUser._id));
-  }, []);
+  }, [dispatch, selectedUser]);
 
   return (
     <div>

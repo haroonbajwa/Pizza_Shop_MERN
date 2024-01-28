@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useSelector, useDispatch } from "react-redux";
@@ -10,7 +10,7 @@ import Loading from "./Loading";
 
 const Cartscreen = () => {
   const cartState = useSelector((state) => state.cartReducer);
-  const { loading, order, error } = useSelector((state) => state.orderReducer);
+  const { loading, error } = useSelector((state) => state.orderReducer);
   const currentUser = JSON.parse(localStorage.getItem("currentUser")) || null;
   const cartItems = cartState.cartItems;
   const subTotal1 = cartItems.reduce((x, item) => x + item.price, 0);

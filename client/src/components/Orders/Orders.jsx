@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { IoChatboxEllipsesOutline } from "react-icons/io5";
 import { Card, Badge } from "react-bootstrap";
@@ -19,12 +19,11 @@ const Orders = () => {
   const { allConversations } = useSelector((state) => state.chatReducer);
 
   const dispatch = useDispatch();
-  const navigate = useNavigate();
 
   useEffect(() => {
     dispatch(getUserOrders(currentUser?._id));
     dispatch(getAllConversations());
-  }, [dispatch]);
+  }, [dispatch, currentUser]);
 
   const getStatusVariant = (status) => {
     switch (status) {

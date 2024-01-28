@@ -3,7 +3,7 @@ import axios from "axios";
 export const registerUser = (user) => async (dispatch) => {
   dispatch({ type: "USER_REGISTER_REQUEST" });
   try {
-    const response = await axios.post(
+    await axios.post(
       `${process.env.REACT_APP_BASE_URL}/api/users/register`,
       user
     );
