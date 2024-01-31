@@ -6,6 +6,8 @@ import {
   GET_USER_ORDERS_REQUEST,
   GET_USER_ORDERS_SUCCESS,
   GET_USER_ORDERS_FAILURE,
+  UPDATE_ORDER_SUCCESS,
+  UPDATE_ORDER_FAILURE,
 } from "../actions/actionsTypes";
 
 // Action to place an order
@@ -48,6 +50,27 @@ export const getUserOrders = (userId) => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: GET_USER_ORDERS_FAILURE,
+      payload: error.response ? error.response.data : "Something went wrong",
+    });
+  }
+};
+
+export const updateOrder = (orderId, orderStatus) => async (dispatch) => {
+  try {
+    console.log(orderId, orderStatus, "call");
+    // Make an API request to update the order
+    const response = await axios.post(
+      `${process.env.REACT_APP_BASE_URL}/api/orders/update/${orderId}`,
+      { orderStatus }
+    );
+    dispatch({
+      type: UPDATE_ORDER_SUCCESS,
+      payload: response.data,
+    });
+    return response.data;
+  } catch (error) {
+    dispatch({
+      type: UPDATE_ORDER_FAILURE,
       payload: error.response ? error.response.data : "Something went wrong",
     });
   }

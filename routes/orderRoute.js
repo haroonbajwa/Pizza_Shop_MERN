@@ -51,6 +51,33 @@ router.get("/user-orders/:userId", async (req, res) => {
   }
 });
 
+router.post("/update/:orderId", async (req, res) => {
+  try {
+    const { orderId } = req.params;
+    const { orderStatus } = req.body;
+
+    const updatedOrder = await Order.findByIdAndUpdate(
+      orderId,
+      { $set: { status: orderStatus } },
+      { new: true }
+    );
+
+    if (!updatedOrder) {
+      res.status(404).json({ error: "Order not found" });
+      return;
+    }
+
+    // Respond with the updated order
+    res.status(200).json({
+      message: "Order status updated successfully",
+      data: updatedOrder,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
 // router.get("/all", async (req, res) => {
 //   try {
 //     const conversations = await Conversation.find();

@@ -29,6 +29,10 @@ const Cartscreen = () => {
 
     // Dispatch the placeOrder action
     dispatch(placeOrder(orderData)).then((res) => {
+      if (res.data) {
+        localStorage.removeItem("cartItems");
+        dispatch({ type: "CLEAR_CART" });
+      }
       toast.success(res.message);
     });
   };

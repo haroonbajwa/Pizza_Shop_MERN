@@ -6,6 +6,8 @@ import {
   GET_USER_ORDERS_REQUEST,
   GET_USER_ORDERS_SUCCESS,
   GET_USER_ORDERS_FAILURE,
+  UPDATE_ORDER_SUCCESS,
+  UPDATE_ORDER_FAILURE,
 } from "../actions/actionsTypes";
 
 const initialState = {
@@ -32,6 +34,21 @@ const orderReducer = (state = initialState, action) => {
       };
 
     case PLACE_ORDER_FAILURE:
+      return {
+        ...state,
+        loading: false,
+        order: null,
+        error: action.payload,
+      };
+
+    case UPDATE_ORDER_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        order: action.payload.data,
+      };
+
+    case UPDATE_ORDER_FAILURE:
       return {
         ...state,
         loading: false,

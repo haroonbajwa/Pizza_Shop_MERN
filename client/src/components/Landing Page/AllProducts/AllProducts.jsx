@@ -22,7 +22,7 @@ const AllProducts = () => {
       <div className="row mx-1">
         {allpizzas?.map((pizza) => {
           return (
-            <div className="col-md-4 col-6 p-1" key={pizza._id}>
+            <div className="col-md-4 col-6 p-2" key={pizza._id}>
               <div>
                 <Product pizza={pizza} />
               </div>
