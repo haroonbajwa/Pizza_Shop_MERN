@@ -5,7 +5,7 @@ import { FaEdit, FaTrash } from "react-icons/fa";
 import { Modal, Button, Form } from "react-bootstrap";
 import { getAllCategories } from "../../actions/pizzaActions";
 import { toast } from "react-toastify";
-import { convertToBase64 } from "../helperFunctions";
+import { objectToFormData } from "../helperFunctions";
 
 const ManageCategories = () => {
   const dispatch = useDispatch();
@@ -16,9 +16,6 @@ const ManageCategories = () => {
   const [selectedItem, setSelectedItem] = useState(null);
   const [editedCategory, setEditedCategory] = useState({
     name: "",
-    variants: [],
-    prices: [{}],
-    category: "",
     image: "",
     description: "",
   });
@@ -43,11 +40,9 @@ const ManageCategories = () => {
 
   const handleImageChange = async (e) => {
     const file = e.target.files[0];
-
-    const base64 = await convertToBase64(file);
     setEditedCategory((prevUser) => ({
       ...prevUser,
-      image: base64,
+      image: file,
     }));
   };
 
@@ -68,20 +63,28 @@ const ManageCategories = () => {
 
   const handleEditFormSubmit = async (event) => {
     event.preventDefault();
+    const formData = objectToFormData(editedCategory);
     setShowEditModal(false);
-    setSelectedItem(null);
     if (selectedItem) {
       // edit selected category
+      setSelectedItem(null);
       await axios
-        .post(`/api/pizzas/edit-category/${selectedItem._id}`, editedCategory)
+        .post(
+          `${process.env.REACT_APP_BASE_URL}/api/pizzas/edit-category/${selectedItem._id}`,
+          formData
+        )
         .then(() => {
           dispatch(getAllCategories());
           toast.success("Category updated successfully.");
         });
     } else {
       // add new category
+      setSelectedItem(null);
       await axios
-        .post("/api/pizzas/add-category", editedCategory)
+        .post(
+          `${process.env.REACT_APP_BASE_URL}/api/pizzas/add-category`,
+          formData
+        )
         .then((res) => {
           dispatch(getAllCategories());
           toast.success(res.data.message);
@@ -91,7 +94,9 @@ const ManageCategories = () => {
 
   const handleDelete = async (categoryId) => {
     await axios
-      .delete(`/api/pizzas/delete-category/${categoryId}`)
+      .delete(
+        `${process.env.REACT_APP_BASE_URL}/api/pizzas/delete-category/${categoryId}`
+      )
       .then((res) => {
         dispatch(getAllCategories());
         toast.info(res.data.message);
@@ -124,7 +129,7 @@ const ManageCategories = () => {
               <td>{item.name}</td>
               <td>
                 <img
-                  src={item.image}
+                  src={`${process.env.REACT_APP_BASE_URL}/uploads/${item.image}`}
                   alt="Product"
                   style={{ maxWidth: "50px", maxHeight: "50px" }}
                 />

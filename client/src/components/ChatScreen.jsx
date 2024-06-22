@@ -11,12 +11,12 @@ const ChatScreen = () => {
   );
 
   useEffect(() => {
-    dispatch(getConversation(selectedUser._id));
+    dispatch(getConversation(selectedUser?._id));
   }, [dispatch, selectedUser]);
 
   return (
     <div>
-      <Chat senderId={selectedUser._id} messages={conversation?.messages} />
+      <Chat senderId={selectedUser?._id} messages={conversation?.messages} />
     </div>
   );
 };

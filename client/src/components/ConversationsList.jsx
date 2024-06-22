@@ -15,37 +15,41 @@ const ConversationsList = ({ conversations }) => {
     <Card>
       <Card.Body>
         <h3 style={{ fontSize: "20px" }} className="my-3 mx-1 text-start">
-          All Conversations
+          Conversations
         </h3>
         <div
           className="mb-3 mx-1"
           style={{ width: "90px", borderBottom: "2px solid #dc3545" }}
         ></div>
-        <div className="d-flex overflow-auto">
-          {conversations?.map((conversation, index) => (
-            <div key={index} className="conversation-bubble p-1 m-1">
-              <div className="users-list d-flex">
-                {conversation.members
-                  .filter((member) => !member.isAdmin)
-                  .map((user, userIndex) => (
-                    <div
-                      key={userIndex}
-                      className="user d-flex flex-column align-items-center"
-                      onClick={() => openConversation(user)}
-                    >
-                      <img
-                        src={user.image}
-                        alt={user.name}
-                        className="rounded-circle mr-2 border border-danger"
-                        style={{ width: "40px", height: "40px" }}
-                      />
-                      <p>{user.name}</p>
-                    </div>
-                  ))}
+        {conversations?.length === 0 ? (
+          <div>There is no conversation yet.</div>
+        ) : (
+          <div className="d-flex overflow-auto">
+            {conversations?.map((conversation, index) => (
+              <div key={index} className="conversation-bubble p-1 m-1">
+                <div className="users-list d-flex">
+                  {conversation.members
+                    .filter((member) => !member.isAdmin)
+                    .map((user, userIndex) => (
+                      <div
+                        key={userIndex}
+                        className="user d-flex flex-column align-items-center"
+                        onClick={() => openConversation(user)}
+                      >
+                        <img
+                          src={user.image}
+                          alt={user.name}
+                          className="rounded-circle mr-2 border border-danger"
+                          style={{ width: "40px", height: "40px" }}
+                        />
+                        <p>{user.name}</p>
+                      </div>
+                    ))}
+                </div>
               </div>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        )}
       </Card.Body>
     </Card>
   );

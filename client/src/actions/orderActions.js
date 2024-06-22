@@ -57,7 +57,6 @@ export const getUserOrders = (userId) => async (dispatch) => {
 
 export const updateOrder = (orderId, orderStatus) => async (dispatch) => {
   try {
-    console.log(orderId, orderStatus, "call");
     // Make an API request to update the order
     const response = await axios.post(
       `${process.env.REACT_APP_BASE_URL}/api/orders/update/${orderId}`,

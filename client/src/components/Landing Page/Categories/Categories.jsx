@@ -22,7 +22,8 @@ const Categories = () => {
         className="row flex-nowrap mx-1 py-1"
         style={{ overflowX: "scroll" }}
       >
-        {[...Array(6).keys()].map((number, index) => {
+        {/* {[...Array(6).keys()].map((number, index) => { */}
+        {allCategories.map((category, index) => {
           return (
             <div
               className="col-4 p-1"
@@ -36,12 +37,14 @@ const Categories = () => {
               <div className="category-container d-flex align-items-center">
                 <img
                   className="img-thumbnail"
-                  src="https://img.freepik.com/free-photo/tasty-top-view-sliced-pizza-italian-traditional-round-pizza_90220-1353.jpg?t=st=1704027186~exp=1704030786~hmac=8780b4792fc5c4e4976d05970ed2043b981678ff7ac168d887b099bb402c65b8&w=740"
+                  src={`${process.env.REACT_APP_BASE_URL}/uploads/${category.image}`}
                   alt="Pizzas"
-                  width={70}
+                  width={50}
                 />
                 <div>
-                  <h3 style={{ fontSize: "16px" }}>Pizzas</h3>
+                  <h3 className="m-0" style={{ fontSize: "16px" }}>
+                    {category.name}
+                  </h3>
                 </div>
               </div>
             </div>

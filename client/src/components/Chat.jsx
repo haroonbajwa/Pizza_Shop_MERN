@@ -54,26 +54,33 @@ const Chat = ({ senderId, messages }) => {
       <div className="card-body">
         {messages?.map((msg) => {
           return (
-            <div
-              className={`d-flex ${
-                msg.sender._id === senderId
-                  ? "justify-content-end"
-                  : "justify-content-start"
-              } mb-4`}
-            >
+            <>
               <div
-                className={
-                  msg.sender._id === senderId
-                    ? "p-3 text-white msg_container_send"
-                    : "p-3 text-white msg_container"
-                }
+                className={`d-flex ${
+                  msg.sender?._id === senderId
+                    ? "justify-content-end"
+                    : "justify-content-start"
+                }`}
               >
-                <div className="message-text">{msg.message}</div>
-                {/* <div className="text-muted">
-                  {new Date(msg.timestamp).toLocaleTimeString("en-US")}
-                </div> */}
+                <div
+                  className={
+                    msg.sender?._id === senderId
+                      ? "p-3 text-white msg_container_send"
+                      : "p-3 text-white msg_container"
+                  }
+                >
+                  <div className="message-text">{msg.message}</div>
+                </div>
               </div>
-            </div>
+              <div
+                className={`text-muted mb-4 ${
+                  msg.sender?._id === senderId ? "text-end" : "text-start"
+                }`}
+                style={{ fontSize: "12px" }}
+              >
+                {new Date(msg.timestamp).toLocaleTimeString("en-US")}
+              </div>
+            </>
           );
         })}
       </div>

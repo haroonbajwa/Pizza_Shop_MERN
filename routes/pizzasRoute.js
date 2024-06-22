@@ -21,9 +21,6 @@ router.post("/add", upload.single("image"), async (req, res) => {
   try {
     const data = req.body;
 
-    console.log(req.file);
-    console.log(req.body);
-
     // Add the image URL to the data object
     if (req.file) {
       const imageUrl = `${req.file.filename}`;
@@ -78,9 +75,10 @@ router.delete("/delete/:id", async (req, res) => {
       return res.status(404).json({ message: "Product not found" });
     }
 
-    const imagePath = path.join(__dirname, "../uploads", deletedPizza.image);
-    console.log(imagePath, "image path");
-    await fs.unlink(imagePath);
+    try {
+      const imagePath = path.join(__dirname, "../uploads", deletedPizza.image);
+      await fs.unlink(imagePath);
+    } catch (error) {}
 
     return res.status(200).json({ message: "Product deleted successfully" });
   } catch (error) {
@@ -99,9 +97,15 @@ router.get("/categories", async (req, res) => {
   }
 });
 
-router.post("/add-category", async (req, res) => {
+router.post("/add-category", upload.single("image"), async (req, res) => {
   try {
     const data = req.body;
+
+    // Add the image URL to the data object
+    if (req.file) {
+      const imageUrl = `${req.file.filename}`;
+      data.image = imageUrl;
+    }
 
     // Create a new category instance
     const newCategory = new Category(data);
@@ -119,10 +123,16 @@ router.post("/add-category", async (req, res) => {
   }
 });
 
-router.post("/edit-category/:id", async (req, res) => {
+router.post("/edit-category/:id", upload.single("image"), async (req, res) => {
   try {
     const categoryId = req.params.id;
     const updatedData = req.body;
+
+    // Add the image URL to the data object
+    if (req.file) {
+      const imageUrl = `${req.file.filename}`;
+      updatedData.image = imageUrl;
+    }
 
     const updatedCategory = await Category.findByIdAndUpdate(
       categoryId,
@@ -150,8 +160,14 @@ router.delete("/delete-category/:id", async (req, res) => {
       return res.status(404).json({ message: "Category not found" });
     }
 
-    // const imagePath = path.join(__dirname, "../uploads", category.image);
-    // await fs.unlink(imagePath);
+    try {
+      const imagePath = path.join(
+        __dirname,
+        "../uploads",
+        deletedCategory.image
+      );
+      await fs.unlink(imagePath);
+    } catch (error) {}
 
     return res.status(200).json({ message: "Category deleted successfully" });
   } catch (error) {

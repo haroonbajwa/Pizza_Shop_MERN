@@ -43,7 +43,15 @@ const Orders = () => {
         return "secondary";
     }
   };
-  const statusOptions = ["pending", "processing", "delivered", "cancelled"];
+  const statusOptions = [
+    "pending",
+    "processing",
+    "45min",
+    "30min",
+    "15min",
+    "delivered",
+    "cancelled",
+  ];
 
   // Handle the status change for a specific item
   const handleStatusChange = (orderId, event) => {
@@ -121,7 +129,7 @@ const Orders = () => {
                         ))}
                       </Form.Control>
                       <button
-                        className="btn btn-success ml-2"
+                        className="btn btn-success p-1"
                         onClick={() => handleUpdateStatus(order._id)}
                       >
                         <FaCheck />
@@ -135,12 +143,6 @@ const Orders = () => {
                       {order.status}
                     </Badge>
                   )}
-                  {/* <Badge
-                    bg={getStatusVariant(order.status)}
-                    className="mb-2 p-2 ml-1"
-                  >
-                    {order.status}
-                  </Badge> */}
                 </div>
                 <div className="d-flex flex-wrap">
                   {order.products.map((product) => (
