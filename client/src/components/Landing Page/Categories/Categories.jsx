@@ -10,8 +10,6 @@ const Categories = () => {
     if (categories) setAllCategories(categories);
   }, [categories]);
 
-  console.log(allCategories);
-
   return (
     <div className="mx-1 my-4">
       <h3 className="text-start">Categories</h3>

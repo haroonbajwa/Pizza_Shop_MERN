@@ -26,7 +26,7 @@ const Product = ({ pizza }) => {
     <div className="shadow-lg bg-white rounded">
       <div onClick={handleShow} style={{ cursor: "pointer" }}>
         <img
-          src={pizza.image}
+          src={`${process.env.REACT_APP_BASE_URL}/uploads/${pizza.image}`}
           alt="pizza"
           className="img-fluid"
           style={{ width: "130px", height: "130px" }}
@@ -102,7 +102,7 @@ const Product = ({ pizza }) => {
 
           <Modal.Body>
             <img
-              src={pizza.image}
+              src={`${process.env.REACT_APP_BASE_URL}/uploads/${pizza.image}`}
               alt="pizza"
               className="img-fluid rounded mx-auto d-block"
               style={{ height: "300px" }}

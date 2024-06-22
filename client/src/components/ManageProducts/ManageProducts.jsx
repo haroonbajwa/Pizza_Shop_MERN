@@ -7,7 +7,7 @@ import Error from "../Error";
 import Loading from "../Loading";
 import { getAllPizzas } from "../../actions/pizzaActions";
 import { toast } from "react-toastify";
-import { convertToBase64 } from "../helperFunctions";
+import { objectToFormData } from "../helperFunctions";
 
 const ManageProducts = () => {
   const dispatch = useDispatch();
@@ -96,7 +96,9 @@ const ManageProducts = () => {
 
   const handleDelete = async (productId) => {
     await axios
-      .delete(`${process.env.REACT_APP_BASE_URL}/api/pizzas/delete/${productId}`)
+      .delete(
+        `${process.env.REACT_APP_BASE_URL}/api/pizzas/delete/${productId}`
+      )
       .then((res) => {
         dispatch(getAllPizzas());
         toast.info(res.data.message);
@@ -118,17 +120,15 @@ const ManageProducts = () => {
 
   const handleImageChange = async (e) => {
     const file = e.target.files[0];
-
-    const base64 = await convertToBase64(file);
     setEditedProduct((prevProduct) => ({
       ...prevProduct,
-      image: base64,
+      image: file,
     }));
   };
 
   const handleEditFormSubmit = async (event) => {
     event.preventDefault();
-
+    const formData = objectToFormData(editedProduct);
     if (selectedItem) {
       // edit selected product
       setShowEditModal(false);
@@ -136,7 +136,7 @@ const ManageProducts = () => {
       await axios
         .post(
           `${process.env.REACT_APP_BASE_URL}/api/pizzas/edit/${selectedItem._id}`,
-          editedProduct
+          formData
         )
         .then(() => {
           dispatch(getAllPizzas());
@@ -147,7 +147,7 @@ const ManageProducts = () => {
       setShowEditModal(false);
       setSelectedItem(null);
       await axios
-        .post(`${process.env.REACT_APP_BASE_URL}/api/pizzas/add`, editedProduct)
+        .post(`${process.env.REACT_APP_BASE_URL}/api/pizzas/add`, formData)
         .then((res) => {
           dispatch(getAllPizzas());
           toast.success(res.data.message);
@@ -190,7 +190,8 @@ const ManageProducts = () => {
                   <td>{item.name}</td>
                   <td>
                     <img
-                      src={item.image}
+                      src={`${process.env.REACT_APP_BASE_URL}/uploads/${item.image}`}
+                      // src={item.image}
                       alt="Product"
                       style={{ maxWidth: "50px", maxHeight: "50px" }}
                     />

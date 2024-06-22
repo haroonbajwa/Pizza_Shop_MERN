@@ -108,7 +108,7 @@ const Cartscreen = () => {
                   </div>
                   <div>
                     <img
-                      src={item.image}
+                      src={`${process.env.REACT_APP_BASE_URL}/uploads/${item.image}`}
                       alt="pizza"
                       style={{ height: "80px", width: "80px" }}
                     />

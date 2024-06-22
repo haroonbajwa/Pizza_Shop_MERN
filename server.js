@@ -1,4 +1,5 @@
 const express = require("express");
+const path = require("path");
 const http = require("http");
 const socketIO = require("socket.io");
 const cors = require("cors");
@@ -21,6 +22,9 @@ const expressPort = process.env.PORT || 5000;
 
 const app = express();
 app.use(cors());
+
+// Serve static files from the uploads directory
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 // scoket io setup
 const server = http.createServer(app);

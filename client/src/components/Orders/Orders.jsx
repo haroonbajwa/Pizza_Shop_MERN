@@ -55,12 +55,9 @@ const Orders = () => {
   // update status call
   const handleUpdateStatus = (orderId) => {
     dispatch(updateOrder(orderId, selectedStatuses[orderId])).then((res) => {
-      console.log(res, "res after update");
       if (res.data) toast.success(res.message);
     });
   };
-
-  console.log(selectedStatuses);
 
   return (
     <div>

@@ -1,9 +1,12 @@
 const { response } = require("express");
 const express = require("express");
+const path = require("path");
+const fs = require("fs").promises;
 const router = express.Router();
 
 const Pizza = require("../models/pizzaModel");
 const Category = require("../models/categoryModel");
+const upload = require("../uploadMiddleware");
 
 router.get("/pizzas", async (req, res) => {
   try {
@@ -14,9 +17,18 @@ router.get("/pizzas", async (req, res) => {
   }
 });
 
-router.post("/add", async (req, res) => {
+router.post("/add", upload.single("image"), async (req, res) => {
   try {
     const data = req.body;
+
+    console.log(req.file);
+    console.log(req.body);
+
+    // Add the image URL to the data object
+    if (req.file) {
+      const imageUrl = `${req.file.filename}`;
+      data.image = imageUrl;
+    }
 
     // Create a new product instance
     const newPizza = new Pizza(data);
@@ -33,10 +45,16 @@ router.post("/add", async (req, res) => {
   }
 });
 
-router.post("/edit/:id", async (req, res) => {
+router.post("/edit/:id", upload.single("image"), async (req, res) => {
   try {
     const pizzaId = req.params.id;
     const updatedData = req.body;
+
+    // Add the image URL to the data object
+    if (req.file) {
+      const imageUrl = `${req.file.filename}`;
+      updatedData.image = imageUrl;
+    }
 
     const updatedPizza = await Pizza.findByIdAndUpdate(pizzaId, updatedData, {
       new: true,
@@ -59,6 +77,10 @@ router.delete("/delete/:id", async (req, res) => {
     if (!deletedPizza) {
       return res.status(404).json({ message: "Product not found" });
     }
+
+    const imagePath = path.join(__dirname, "../uploads", deletedPizza.image);
+    console.log(imagePath, "image path");
+    await fs.unlink(imagePath);
 
     return res.status(200).json({ message: "Product deleted successfully" });
   } catch (error) {
@@ -127,6 +149,9 @@ router.delete("/delete-category/:id", async (req, res) => {
     if (!deletedCategory) {
       return res.status(404).json({ message: "Category not found" });
     }
+
+    // const imagePath = path.join(__dirname, "../uploads", category.image);
+    // await fs.unlink(imagePath);
 
     return res.status(200).json({ message: "Category deleted successfully" });
   } catch (error) {
