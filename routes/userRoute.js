@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 
 const User = require("../models/userModel");
+const upload = require("../uploadMiddleware");
 
 router.post("/register", async (req, res) => {
   const { name, email, password } = req.body;
@@ -36,21 +37,31 @@ router.post("/login", async (req, res) => {
   }
 });
 
-router.post("/update", async (req, res) => {
+router.post("/update", upload.single("image"), async (req, res) => {
   try {
-    const { _id, name, image } = req.body;
+    const { _id, name } = req.body;
 
     // Ensure that the provided _id is valid
     if (!_id) {
       return res.status(400).json({ message: "Invalid _id provided" });
     }
 
+    // Add the image URL to the data object
+    let updatedImage = "";
+    if (req.file) {
+      updatedImage = `${req.file.filename}`;
+    }
+
+    const updateData = { name };
+    if (updatedImage) {
+      updateData.image = updatedImage;
+    }
+
     // Update only the specified fields (excluding _id, isAdmin, email)
-    const updatedUser = await User.findOneAndUpdate(
-      { _id },
-      { name, image },
-      { new: true, omitUndefined: true }
-    );
+    const updatedUser = await User.findOneAndUpdate({ _id }, updateData, {
+      new: true,
+      omitUndefined: true,
+    });
 
     if (!updatedUser) {
       return res.status(404).json({ message: "User not found" });

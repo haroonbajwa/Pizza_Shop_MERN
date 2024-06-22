@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { updateUser } from "../../actions/userActions";
 import placeholderImage from "../../assets/userAvatar.jpg";
 import { FaCamera } from "react-icons/fa";
-import { convertToBase64 } from "../helperFunctions";
+import { objectToFormData } from "../helperFunctions";
 
 const MyAccount = () => {
   const dispatch = useDispatch();
@@ -15,7 +15,7 @@ const MyAccount = () => {
 
   const userData = {
     ...currentUser,
-    Image: `data:image/png;base64,${currentUser.image}`,
+    // Image: `data:image/png;base64,${currentUser.image}`,
   };
   const [isEditing, setEditing] = useState(false);
   const [updatedUser, setUpdatedUser] = useState(userData);
@@ -29,7 +29,8 @@ const MyAccount = () => {
   };
 
   const handleUpdate = () => {
-    dispatch(updateUser(updatedUser));
+    const formData = objectToFormData(updatedUser);
+    dispatch(updateUser(formData));
     setEditing(false);
   };
 
@@ -40,11 +41,9 @@ const MyAccount = () => {
 
   const handleImageChange = async (e) => {
     const file = e.target.files[0];
-
-    const base64 = await convertToBase64(file);
     setUpdatedUser((prevUser) => ({
       ...prevUser,
-      image: base64,
+      image: file,
     }));
   };
 
@@ -53,7 +52,6 @@ const MyAccount = () => {
     localStorage.clear();
     dispatch({ type: "USER_LOGOUT" });
   };
-
   return (
     <div className="container mt-4">
       {currentUser.isAdmin && (
@@ -81,7 +79,12 @@ const MyAccount = () => {
         <div className="col-md-4 col-sm-12 mb-3">
           <label htmlFor="upload-image">
             <img
-              src={updatedUser.image || placeholderImage}
+              src={
+                (updatedUser.image instanceof File
+                  ? URL.createObjectURL(updatedUser.image)
+                  : `${process.env.REACT_APP_BASE_URL}/uploads/${updatedUser.image}`) ||
+                placeholderImage
+              }
               alt="User"
               className="img-fluid rounded-circle"
               style={{ cursor: "pointer" }}

@@ -12,7 +12,7 @@ import { objectToFormData } from "../helperFunctions";
 const ManageProducts = () => {
   const dispatch = useDispatch();
   const pizzasState = useSelector((state) => state.getAllPizzasReducer);
-  const { pizzas, error, loading } = pizzasState;
+  const { pizzas, categories, error, loading } = pizzasState;
   const [allPizzas, setAllPizzas] = useState([]);
   const [showEditModal, setShowEditModal] = useState(false);
 
@@ -191,7 +191,6 @@ const ManageProducts = () => {
                   <td>
                     <img
                       src={`${process.env.REACT_APP_BASE_URL}/uploads/${item.image}`}
-                      // src={item.image}
                       alt="Product"
                       style={{ maxWidth: "50px", maxHeight: "50px" }}
                     />
@@ -304,24 +303,19 @@ const ManageProducts = () => {
                 <Form.Group controlId="productCategory">
                   <Form.Label>Category</Form.Label>
                   <Form.Control
-                    type="text"
+                    as="select"
                     name="category"
-                    placeholder="Enter product category"
                     value={editedProduct.category}
                     onChange={handleInputChange}
-                  />
+                  >
+                    {categories?.map((category) => (
+                      <option key={category._id} value={category.name}>
+                        {category.name.charAt(0).toUpperCase() +
+                          category.name.slice(1)}
+                      </option>
+                    ))}
+                  </Form.Control>
                 </Form.Group>
-
-                {/* <Form.Group controlId="productImage">
-                  <Form.Label>Image URL</Form.Label>
-                  <Form.Control
-                    type="text"
-                    name="image"
-                    placeholder="Enter product image URL"
-                    value={editedProduct.image}
-                    onChange={handleInputChange}
-                  />
-                </Form.Group> */}
 
                 <Form.Group controlId="productImage">
                   <Form.Label>Image</Form.Label>
