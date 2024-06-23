@@ -9,10 +9,13 @@ const ChatScreen = () => {
   const selectedUser = useSelector(
     (state) => state.chatReducer.selectedConvUser
   );
+  //  ||
+  // JSON.parse(localStorage.getItem("currentUser"));
 
   useEffect(() => {
-    dispatch(getConversation(selectedUser?._id));
-  }, [dispatch, selectedUser]);
+    if (selectedUser) dispatch(getConversation(selectedUser._id));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedUser]);
 
   return (
     <div>

@@ -3,7 +3,7 @@
 const initialState = {
   allMessages: [],
   allUsers: [],
-  conversation: [],
+  conversation: {},
   allConversations: [],
   selectedConvUser: JSON.parse(localStorage.getItem("currentUser")),
 };
@@ -44,9 +44,11 @@ const chatReducer = (state = initialState, action) => {
       return {
         loading: false,
         allMessages: action.payload,
+        ...state,
       };
     case "GET_MESSAGES_FAILED":
       return {
+        ...state,
         error: action.payload,
         loading: false,
       };
@@ -59,11 +61,13 @@ const chatReducer = (state = initialState, action) => {
       };
     case "CREATE_CONVERSATION_SUCCESS":
       return {
+        ...state,
         loading: false,
         conversation: action.payload,
       };
     case "CREATE_CONVERSATION_FAILED":
       return {
+        ...state,
         error: action.payload,
         loading: false,
       };
@@ -76,11 +80,13 @@ const chatReducer = (state = initialState, action) => {
       };
     case "GET_USERS_SUCCESS":
       return {
+        ...state,
         loading: false,
         allUsers: action.payload,
       };
     case "GET_USERS_FAILED":
       return {
+        ...state,
         error: action.payload,
         loading: false,
       };

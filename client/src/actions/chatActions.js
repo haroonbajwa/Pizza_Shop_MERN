@@ -66,7 +66,9 @@ export const getAllUsers = () => async (dispatch) => {
   dispatch({ type: "GET_USERS_REQUEST" });
 
   try {
-    const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/api/users/all`);
+    const response = await axios.get(
+      `${process.env.REACT_APP_BASE_URL}/api/users/all`
+    );
     dispatch({ type: "GET_USERS_SUCCESS", payload: response.data });
   } catch (error) {
     dispatch({ type: "GET_USERS_FAILED", payload: error });

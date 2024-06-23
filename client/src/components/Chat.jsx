@@ -12,10 +12,14 @@ const Chat = ({ senderId, messages }) => {
   const dispatch = useDispatch();
   const conversation = useSelector((state) => state.chatReducer.conversation);
 
+  // console.log(senderId, "sender id");
+
+  const currentUser = JSON.parse(localStorage.getItem("currentUser"));
+
   const handleMessageSubmit = (e) => {
     e.preventDefault();
     if (message.trim() !== "") {
-      dispatch(sendMessage(conversation._id, senderId, message));
+      dispatch(sendMessage(conversation._id, currentUser._id, message));
       setMessage("");
     }
   };
@@ -24,8 +28,6 @@ const Chat = ({ senderId, messages }) => {
     // Join the admin room when the component mounts
     if (conversation)
       socket.emit("joinAdmin", { conversationId: conversation._id });
-
-    // check if conversation already created
   }, [conversation]);
 
   useEffect(() => {
@@ -40,9 +42,11 @@ const Chat = ({ senderId, messages }) => {
     };
   }, [dispatch]);
 
-  const startConversation = () => {
-    dispatch(createConversation());
+  const startConversation = async () => {
+    await dispatch(createConversation());
   };
+
+  console.log(conversation, "conccc");
 
   return (
     <div>
@@ -57,14 +61,14 @@ const Chat = ({ senderId, messages }) => {
             <>
               <div
                 className={`d-flex ${
-                  msg.sender?._id === senderId
+                  msg.sender?._id === currentUser._id
                     ? "justify-content-end"
                     : "justify-content-start"
                 }`}
               >
                 <div
                   className={
-                    msg.sender?._id === senderId
+                    msg.sender?._id === currentUser._id
                       ? "p-3 text-white msg_container_send"
                       : "p-3 text-white msg_container"
                   }
@@ -74,7 +78,9 @@ const Chat = ({ senderId, messages }) => {
               </div>
               <div
                 className={`text-muted mb-4 ${
-                  msg.sender?._id === senderId ? "text-end" : "text-start"
+                  msg.sender?._id === currentUser._id
+                    ? "text-end"
+                    : "text-start"
                 }`}
                 style={{ fontSize: "12px" }}
               >
